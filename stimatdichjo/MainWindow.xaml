@@ -12,16 +12,32 @@
             <ColumnDefinition Width="107*"/>
             <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="ImageShow" HorizontalAlignment="Left" Height="325" Margin="41,50,0,0" VerticalAlignment="Top" Width="305" Grid.Column="1" Grid.ColumnSpan="2">
-            <Image.Effect>
-                <DropShadowEffect BlurRadius="10" Opacity="0.25" Direction="270"/>
-            </Image.Effect>
-        </Image>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,30,0,0" FontFamily="FOT-RodinBokutoh Pro L" FontSize="36" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="57" Width="430" Text="Pemilihan file" FontWeight="Thin"/>
-        <Button x:Name="Impor_File_Button" Content="Impor file..." HorizontalAlignment="Left" Margin="233,173,0,0" VerticalAlignment="Top" Width="75" FontFamily="Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium"/>
-        <TextBox x:Name="TextBox" HorizontalAlignment="Left" Height="19" Margin="23,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="365" Grid.Column="2"/>
-        <Button x:Name="Tampilkeun" Content="Tampilkeun" HorizontalAlignment="Left" Margin="313,173,0,0" VerticalAlignment="Top" Width="75" Click="TampilkeunButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium"/>
+        <Button x:Name="Impor_File_Button" Content="Impor file..." HorizontalAlignment="Left" Margin="233,173,0,0" VerticalAlignment="Top" Width="75" FontFamily="Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+            <Button.Effect>
+                <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
+            </Button.Effect>
+        </Button>
+        <TextBox x:Name="TextBox" HorizontalAlignment="Left" Height="19" Margin="23,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="365" Grid.Column="2" FontFamily="Neue Haas Grotesk Text Pro">
+            <TextBox.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0.513"/>
+                    <GradientStop Color="#FF65A2C5" Offset="1"/>
+                    <GradientStop Color="#FF65A2C5" Offset="0.543"/>
+                </LinearGradientBrush>
+            </TextBox.BorderBrush>
+        </TextBox>
+        <Button x:Name="Tampilkeun" Content="Tampilkeun" HorizontalAlignment="Left" Margin="313,173,0,0" VerticalAlignment="Top" Width="75" Click="TampilkeunButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+            <Button.Effect>
+                <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
+            </Button.Effect>
+        </Button>
         <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="23,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="FOT-RodinBokutoh Pro DB" FontSize="16"><Run Text="Masukkan"/><Run Text=" nama"/><Run Text=" "/><Run Text="file di kotak bawah ini"/></TextBlock>
+        <TextBox x:Name="TextboxnyaMathias" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="357" Margin="23,20,0,0" TextWrapping="Wrap" Text="Ehe ehe&#xD;&#xA;" VerticalAlignment="Top" Width="276" FontFamily="FOT-RodinBokutoh Pro B">
+            <TextBox.Effect>
+                <DropShadowEffect Direction="269" BlurRadius="10" Opacity="0.25"/>
+            </TextBox.Effect>
+        </TextBox>
 
     </Grid>
 </Window>
