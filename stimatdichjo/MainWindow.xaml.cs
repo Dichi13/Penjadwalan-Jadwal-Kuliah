@@ -17,6 +17,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Interop;
+using System.Collections;
 
 namespace stimatdichjo
 {
@@ -58,10 +59,31 @@ namespace stimatdichjo
             LMataKuliah.ReadFile(TextBox.Text);
 
             int count = LMataKuliah.ListMatKul.Count;
-            foreach(MataKuliah MK in LMataKuliah.ListMatKul)
+            foreach (MataKuliah MK in LMataKuliah.ListMatKul)
             {
                 TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
             }
+
+            //Call the DFS method
+            LMataKuliah.topologicalSortDFS();
+            bool[] printed = new bool[LMataKuliah.ListMatKul.Count];
+            //search for each time stamp that hasn't printed
+            for (int i = LMataKuliah.ListMatKul.Count * 2; i >=1; i--)
+            {
+                //search in each MatKul
+                for (int j = 0; j < LMataKuliah.ListMatKul.Count; j++)
+                {
+                    if (LMataKuliah.ListMatKul[j].outTimeStamp == i && !printed[j])
+                    {
+                        //print the elements
+                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].NamaMataKuliah + '\n');
+                        TextboxnyaMathias.AppendText("In : " + LMataKuliah.ListMatKul[j].inTimeStamp + '\n');
+                        TextboxnyaMathias.AppendText("Out : " + LMataKuliah.ListMatKul[j].outTimeStamp + '\n');
+                        break;
+                    }
+                }
+            }
+
             TampilGraf.Source = convert(LMataKuliah.DrawGraph());
         }
 
@@ -83,6 +105,8 @@ namespace stimatdichjo
         public List<string> PreRequisite = new List<string>();
         public List<string> PostRequisite = new List<string>();
         public int id;
+        public int inTimeStamp;
+        public int outTimeStamp;
         public MataKuliah()
         {
 
@@ -98,8 +122,8 @@ namespace stimatdichjo
         public string PrintMataKuliah()
         {
             string stringToReturn;
-            stringToReturn = "Nama Mata Kuliah : " + NamaMataKuliah +'\n';
-            stringToReturn += "Nomor ID : " + id +'\n';
+            stringToReturn = "Nama Mata Kuliah : " + NamaMataKuliah + '\n';
+            stringToReturn += "Nomor ID : " + id + '\n';
             //if no prerequisite
             if (PreRequisite.Count == 0)
             {
@@ -108,7 +132,7 @@ namespace stimatdichjo
             else
             {
                 stringToReturn += "PreRequisite :";
-                foreach(string _MatKul in PreRequisite)
+                foreach (string _MatKul in PreRequisite)
                 {
                     stringToReturn += " " + _MatKul;
                 }
@@ -129,10 +153,12 @@ namespace stimatdichjo
             }
             return stringToReturn;
         }
-        
+
     }
+
     class ListMataKuliah
     {
+        public int timeStamp = 1;
         //Element : List of MataKuliah
         public List<MataKuliah> ListMatKul = new List<MataKuliah>();
         /** Read file from specific location, example : "c:\fileTubes.txt"
@@ -164,7 +190,7 @@ namespace stimatdichjo
                 ListMatKul.Add(MK);
             }
             //Sort the ListMatKul by its NamaMataKuliah
-            ListMatKul = ListMatKul.OrderBy(o => o.NamaMataKuliah).ToList();
+            ListMatKul = ListMatKul.OrderBy(o => o.PreRequisite.Count).ToList();
             //Add their ID
             AddID();
             AddPostRequisite();
@@ -174,18 +200,18 @@ namespace stimatdichjo
                 ListMatKul[i].PrintMataKuliah();
             }
             file.Close();
-            
+
             // Suspend the screen.  
             System.Console.ReadLine();
         }
         public void AddPostRequisite()
         {
 
-            
+
             for (int i = 0; i < ListMatKul.Count; i++)
             {
                 //for each other matkul
-                for(int j = 0; j < ListMatKul.Count; j++)
+                for (int j = 0; j < ListMatKul.Count; j++)
                 {
                     if (i == j)
                     {
@@ -193,10 +219,10 @@ namespace stimatdichjo
                     }
                     else
                     {
-                        for(int k = 0; k < ListMatKul[j].PreRequisite.Count; k++)
+                        for (int k = 0; k < ListMatKul[j].PreRequisite.Count; k++)
                         {
                             //if the name is same
-                            if(ListMatKul[i].NamaMataKuliah == ListMatKul[j].PreRequisite[k])
+                            if (ListMatKul[i].NamaMataKuliah == ListMatKul[j].PreRequisite[k])
                             {
                                 ListMatKul[i].PostRequisite.Add(ListMatKul[j].NamaMataKuliah);
                             }
@@ -209,7 +235,7 @@ namespace stimatdichjo
         public void AddID()
         {
             //The List has already sorted
-            for(int i = 0; i < ListMatKul.Count; i++)
+            for (int i = 0; i < ListMatKul.Count; i++)
             {
                 ListMatKul[i].id = i;
             }
@@ -234,6 +260,52 @@ namespace stimatdichjo
             renderer.Render(bitmap);
 
             return bitmap;
+        }
+        //Visit all of the list in the PreRequisites of a node that hasn't visited
+        public void topologicalSortRecDFS(int node, bool[] visited)
+        {
+            if (!visited[node])
+            {
+                visited[node] = true;
+                ListMatKul[node].inTimeStamp = timeStamp++;
+            }
+
+            for (int i = 0; i < ListMatKul[node].PostRequisite.Count; i++)
+            {
+                if (!visited[GetNumberInList(ListMatKul[node].PostRequisite[i])])
+                {
+                    topologicalSortRecDFS(GetNumberInList(ListMatKul[node].PostRequisite[i]), visited);
+                }
+            }
+            //Give time stamp
+            ListMatKul[node].outTimeStamp = timeStamp++;
+        }
+        //find the number of an NamaMatKuliah, must be in the list
+        public int GetNumberInList(string namaMatKul)
+        {
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                if (ListMatKul[i].NamaMataKuliah == namaMatKul)
+                {
+                    return i;
+                }
+            }
+            return 0;
+        }
+        //Visit all of the nodes in graph
+        public void topologicalSortDFS()
+        {
+            timeStamp = 1;
+            bool[] visited = new bool[ListMatKul.Count];
+            //Default bool type in C# is False, so don't need to initialize to false
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+
+                if (!visited[i])
+                {
+                    topologicalSortRecDFS(i, visited);
+                }
+            }
         }
     }
 }
