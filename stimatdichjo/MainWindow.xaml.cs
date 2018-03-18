@@ -58,21 +58,9 @@ namespace stimatdichjo
             LMataKuliah.ReadFile(TextBox.Text);
 
             int count = LMataKuliah.ListMatKul.Count;
-            for (int i = 0; i < count; i++)
+            foreach(MataKuliah MK in LMataKuliah.ListMatKul)
             {
-                TextboxnyaMathias.AppendText("Nama Mata Kuliah:");
-                TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[i].NamaMataKuliah);
-                int countlagi = LMataKuliah.ListMatKul[i].PreRequisite.Count;
-                if (countlagi > 0)
-                {
-                    TextboxnyaMathias.AppendText("\n Prerequisite:");
-                    for (int j = 0; j < countlagi; j++)
-                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[i].PreRequisite[j]);
-                } else
-                {
-                    TextboxnyaMathias.AppendText("\n No Prerequisite!");
-                }
-                TextboxnyaMathias.AppendText("\n");
+                TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
             }
             TampilGraf.Source = convert(LMataKuliah.DrawGraph());
         }
@@ -93,7 +81,8 @@ namespace stimatdichjo
         //Elements : Nama Mata Kuliah and PreRequisites
         public string NamaMataKuliah;
         public List<string> PreRequisite = new List<string>();
-
+        public List<string> PostRequisite = new List<string>();
+        public int id;
         public MataKuliah()
         {
 
@@ -106,24 +95,41 @@ namespace stimatdichjo
             PreRequisite = _PreReq;
         }
         // Print Nama Mata Kuliah and its Prerequisites
-        public void PrintMataKuliah()
+        public string PrintMataKuliah()
         {
-            Console.WriteLine("Nama Mata Kuliah : {0:D}", NamaMataKuliah);
+            string stringToReturn;
+            stringToReturn = "Nama Mata Kuliah : " + NamaMataKuliah +'\n';
+            stringToReturn += "Nomor ID : " + id +'\n';
             //if no prerequisite
             if (PreRequisite.Count == 0)
             {
-                Console.WriteLine("No PreRequisite !");
+                stringToReturn += "No PreRequisite !\n";
             }
             else
             {
-                Console.Write("PreRequisite : ");
-                foreach (string _MatKul in PreRequisite)
+                stringToReturn += "PreRequisite :";
+                foreach(string _MatKul in PreRequisite)
                 {
-                    Console.Write("{0:D}", _MatKul);
+                    stringToReturn += " " + _MatKul;
                 }
-                Console.WriteLine();
+                stringToReturn += '\n';
             }
+            if (PostRequisite.Count == 0)
+            {
+                stringToReturn += "No PostRequisite !\n";
+            }
+            else
+            {
+                stringToReturn += "PostRequisite :";
+                foreach (string _MatKul in PostRequisite)
+                {
+                    stringToReturn += " " + _MatKul;
+                }
+                stringToReturn += '\n';
+            }
+            return stringToReturn;
         }
+        
     }
     class ListMataKuliah
     {
@@ -157,14 +163,56 @@ namespace stimatdichjo
                 }
                 ListMatKul.Add(MK);
             }
+            //Sort the ListMatKul by its NamaMataKuliah
+            ListMatKul = ListMatKul.OrderBy(o => o.NamaMataKuliah).ToList();
+            //Add their ID
+            AddID();
+            AddPostRequisite();
             //Console.Write(ListMatKul[0].NamaMataKuliah);
             for (int i = 0; i < ListMatKul.Count; i++)
             {
                 ListMatKul[i].PrintMataKuliah();
             }
             file.Close();
+            
             // Suspend the screen.  
             System.Console.ReadLine();
+        }
+        public void AddPostRequisite()
+        {
+
+            
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                //for each other matkul
+                for(int j = 0; j < ListMatKul.Count; j++)
+                {
+                    if (i == j)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        for(int k = 0; k < ListMatKul[j].PreRequisite.Count; k++)
+                        {
+                            //if the name is same
+                            if(ListMatKul[i].NamaMataKuliah == ListMatKul[j].PreRequisite[k])
+                            {
+                                ListMatKul[i].PostRequisite.Add(ListMatKul[j].NamaMataKuliah);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AddID()
+        {
+            //The List has already sorted
+            for(int i = 0; i < ListMatKul.Count; i++)
+            {
+                ListMatKul[i].id = i;
+            }
         }
         public Bitmap DrawGraph()
         {
