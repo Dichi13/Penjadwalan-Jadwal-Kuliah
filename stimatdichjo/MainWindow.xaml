@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:stimatdichjo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" FontFamily="Acephimere">
+        Title="Topology Sort ala Stimatdichjo" Height="450" Width="800" FontFamily="Acephimere">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
@@ -13,7 +13,7 @@
             <ColumnDefinition Width="157*"/>
         </Grid.ColumnDefinitions>
         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="10,30,0,0" FontFamily="FOT-RodinBokutoh Pro L" FontSize="36" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="57" Width="430" Text="Pemilihan file" FontWeight="Thin"/>
-        <Button x:Name="Impor_File_Button" Content="Impor file..." HorizontalAlignment="Left" Margin="233,173,0,0" VerticalAlignment="Top" Width="75" FontFamily="Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+        <Button x:Name="Impor_File_Button" Content="Impor file..." HorizontalAlignment="Left" Margin="23,173,0,0" VerticalAlignment="Top" Width="75" FontFamily="Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
             <Button.Effect>
                 <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
             </Button.Effect>
@@ -27,22 +27,26 @@
                 </LinearGradientBrush>
             </TextBox.BorderBrush>
         </TextBox>
-        <Button x:Name="Tampilkeun" Content="Tampilkeun" HorizontalAlignment="Left" Margin="313,173,0,0" VerticalAlignment="Top" Width="75" Click="TampilkeunButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+        <Button x:Name="DFS" Content="DFS" HorizontalAlignment="Left" Margin="232,173,0,0" VerticalAlignment="Top" Width="75" Click="DFSButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
             <Button.Effect>
                 <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
             </Button.Effect>
         </Button>
         <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="23,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="FOT-RodinBokutoh Pro DB" FontSize="16"><Run Text="Masukkan"/><Run Text=" nama"/><Run Text=" "/><Run Text="file di kotak bawah ini"/></TextBlock>
-        <TextBox x:Name="TextboxnyaMathias" HorizontalAlignment="Left" Height="172" Margin="78,215,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="276" FontFamily="FOT-RodinBokutoh Pro B" Grid.Column="2">
+        <TextBox x:Name="TextboxnyaMathias" HorizontalAlignment="Left" Height="172" Margin="78,215,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="276" FontFamily="FOT-RodinBokutoh Pro B" Grid.Column="2">
             <TextBox.Effect>
-                <DropShadowEffect Direction="269" BlurRadius="10" Opacity="0.25"/>
+                <DropShadowEffect Direction="270" BlurRadius="10" Opacity="0.25"/>
             </TextBox.Effect>
         </TextBox>
-        <Image x:Name="TampilGraf" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Stretch="Uniform" Height="357" Margin="25,30,0,0" VerticalAlignment="Top" Width="270">
+        <Image x:Name="TampilGraf" RenderOptions.BitmapScalingMode="HighQuality" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Stretch="Uniform" Height="357" Margin="26,31,25,31" VerticalAlignment="Stretch" Width="270">
             <Image.Effect>
                 <DropShadowEffect BlurRadius="10" Direction="270" Opacity="0.25"/>
             </Image.Effect>
         </Image>
-
+        <Button x:Name="BFS" Content="BFS" HorizontalAlignment="Left" Margin="312,173,0,0" VerticalAlignment="Top" Width="75" Click="BFSButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+            <Button.Effect>
+                <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
+            </Button.Effect>
+        </Button>
     </Grid>
 </Window>

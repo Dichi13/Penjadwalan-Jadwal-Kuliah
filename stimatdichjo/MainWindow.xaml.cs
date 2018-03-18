@@ -53,16 +53,19 @@ namespace stimatdichjo
             }
         }
 
-        private void TampilkeunButton(object sender, RoutedEventArgs e)
+        private void DFSButton(object sender, RoutedEventArgs e)
         {
             ListMataKuliah LMataKuliah = new ListMataKuliah();
             LMataKuliah.ReadFile(TextBox.Text);
 
-            int count = LMataKuliah.ListMatKul.Count;
+            // clears the textbox
+            TextboxnyaMathias.Text = String.Empty;
+            
+            /* Function for debugging
             foreach (MataKuliah MK in LMataKuliah.ListMatKul)
             {
                 TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
-            }
+            }*/
 
             //Call the DFS method
             LMataKuliah.topologicalSortDFS();
@@ -87,6 +90,34 @@ namespace stimatdichjo
             TampilGraf.Source = convert(LMataKuliah.DrawGraph());
         }
 
+        private void BFSButton(object sender, RoutedEventArgs e)
+        {
+            ListMataKuliah LMataKuliah = new ListMataKuliah();
+            LMataKuliah.ReadFile(TextBox.Text);
+
+            // clears the textbox
+            TextboxnyaMathias.Text = String.Empty;
+
+            /* Function for debugging
+            foreach (MataKuliah MK in LMataKuliah.ListMatKul)
+            {
+                TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
+            }*/
+
+            //Call the BFS method
+            List<int> order = new List<int>();
+            order = LMataKuliah.topologicalSortBFS();
+            //search for each time stamp that hasn't printed
+            foreach (int i in order)
+            {
+                //print the elements
+                TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[i].NamaMataKuliah + '\n');
+            }
+
+            TampilGraf.Source = convert(LMataKuliah.DrawGraph());
+        }
+
+        // Function to convert Bitmap into BitmapSource which will be used to embed graph image
         private BitmapSource convert(Bitmap bitmap)
         {
             BitmapSource i = Imaging.CreateBitmapSourceFromHBitmap(
@@ -255,7 +286,7 @@ namespace stimatdichjo
 
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
-            int width = 150;
+            int width = 1500;
             Bitmap bitmap = new Bitmap(width, (int)(graph.Height * (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             renderer.Render(bitmap);
 
@@ -300,12 +331,52 @@ namespace stimatdichjo
             //Default bool type in C# is False, so don't need to initialize to false
             for (int i = 0; i < ListMatKul.Count; i++)
             {
-
                 if (!visited[i])
                 {
                     topologicalSortRecDFS(i, visited);
                 }
             }
+        }
+
+        public List<int> topologicalSortBFS()
+        {
+            // Lists degree of each nodes
+            int[] derajat = new int[ListMatKul.Count];
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                derajat[i] = ListMatKul[i].PreRequisite.Count;
+            }
+
+            // Add nodes with zero degrees to the queue
+            LinkedList<int> queue = new LinkedList<int>();
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                if (derajat[i] == 0)
+                {
+                    queue.AddLast(i);
+                }
+            }
+
+            // Add sorted nodes into the topOrder list
+            List<int> topOrder = new List<int>();
+            while (queue.Count > 0)
+            {   
+                // Remove the first element of the queue
+                int top = queue.First.Value;
+                queue.RemoveFirst();
+                topOrder.Add(top);
+
+                // Subtract degree of any other nodes that pointed by the removed node by 1
+                foreach (string simpul in ListMatKul[top].PostRequisite)
+                {
+                    if(--derajat[GetNumberInList(simpul)] == 0)
+                    {
+                        queue.AddLast(GetNumberInList(simpul));
+                    }
+                }
+            }
+
+            return topOrder;
         }
     }
 }
