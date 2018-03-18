@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Windows.Interop;
 
 namespace stimatdichjo
 {
@@ -70,6 +74,17 @@ namespace stimatdichjo
                 }
                 TextboxnyaMathias.AppendText("\n");
             }
+            TampilGraf.Source = convert(LMataKuliah.DrawGraph());
+        }
+
+        private BitmapSource convert(Bitmap bitmap)
+        {
+            BitmapSource i = Imaging.CreateBitmapSourceFromHBitmap(
+                           bitmap.GetHbitmap(),
+                           IntPtr.Zero,
+                           Int32Rect.Empty,
+                           BitmapSizeOptions.FromEmptyOptions());
+            return i;
         }
     }
 
@@ -127,6 +142,10 @@ namespace stimatdichjo
                 //System.Console.WriteLine(line);
                 line = line.Substring(0, line.Length - 1);
                 string[] arrMatKul = line.Split(',');
+                for (int i = 0; i < arrMatKul.Length; i++)
+                {
+                    arrMatKul[i] = arrMatKul[i].Replace(" ", string.Empty);
+                }
                 MataKuliah MK = new MataKuliah();
                 MK.NamaMataKuliah = arrMatKul[0];
                 if (arrMatKul.Length > 1)
@@ -146,6 +165,27 @@ namespace stimatdichjo
             file.Close();
             // Suspend the screen.  
             System.Console.ReadLine();
+        }
+        public Bitmap DrawGraph()
+        {
+            Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
+                {
+                    graph.AddEdge(ListMatKul[i].PreRequisite[j], ListMatKul[i].NamaMataKuliah);
+                }
+
+            }
+
+            Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+            renderer.CalculateLayout();
+            int width = 150;
+            Bitmap bitmap = new Bitmap(width, (int)(graph.Height * (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            renderer.Render(bitmap);
+
+            return bitmap;
         }
     }
 }

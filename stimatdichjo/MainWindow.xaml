@@ -33,11 +33,16 @@
             </Button.Effect>
         </Button>
         <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="23,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="FOT-RodinBokutoh Pro DB" FontSize="16"><Run Text="Masukkan"/><Run Text=" nama"/><Run Text=" "/><Run Text="file di kotak bawah ini"/></TextBlock>
-        <TextBox x:Name="TextboxnyaMathias" Grid.ColumnSpan="2" HorizontalAlignment="Left" Height="357" Margin="23,20,0,0" TextWrapping="Wrap" Text="Ehe ehe&#xD;&#xA;" VerticalAlignment="Top" Width="276" FontFamily="FOT-RodinBokutoh Pro B">
+        <TextBox x:Name="TextboxnyaMathias" HorizontalAlignment="Left" Height="172" Margin="78,215,0,0" TextWrapping="Wrap" Text="&#xA;" VerticalAlignment="Top" Width="276" FontFamily="FOT-RodinBokutoh Pro B" Grid.Column="2">
             <TextBox.Effect>
                 <DropShadowEffect Direction="269" BlurRadius="10" Opacity="0.25"/>
             </TextBox.Effect>
         </TextBox>
+        <Image x:Name="TampilGraf" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Stretch="Uniform" Height="357" Margin="25,30,0,0" VerticalAlignment="Top" Width="270">
+            <Image.Effect>
+                <DropShadowEffect BlurRadius="10" Direction="270" Opacity="0.25"/>
+            </Image.Effect>
+        </Image>
 
     </Grid>
 </Window>
