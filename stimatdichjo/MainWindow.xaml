@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:stimatdichjo"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="Yonatan Jandra" Height="600" Width="1024" FontFamily="Acephimere">
+        Title="Graph-It!" Height="600" Width="1024" FontFamily="Acephimere">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0*"/>
