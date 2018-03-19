@@ -71,6 +71,7 @@ namespace stimatdichjo
             LMataKuliah.topologicalSortDFS();
             bool[] printed = new bool[LMataKuliah.ListMatKul.Count];
             //search for each time stamp that hasn't printed
+            int count = 1;
             for (int i = LMataKuliah.ListMatKul.Count * 2; i >=1; i--)
             {
                 //search in each MatKul
@@ -79,9 +80,11 @@ namespace stimatdichjo
                     if (LMataKuliah.ListMatKul[j].outTimeStamp == i && !printed[j])
                     {
                         //print the elements
-                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].NamaMataKuliah + '\n');
-                        TextboxnyaMathias.AppendText("In : " + LMataKuliah.ListMatKul[j].inTimeStamp + '\n');
-                        TextboxnyaMathias.AppendText("Out : " + LMataKuliah.ListMatKul[j].outTimeStamp + '\n');
+                        TextboxnyaMathias.AppendText("Semester " + count + ": ");
+                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].NamaMataKuliah + " (");
+                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].inTimeStamp + "/");
+                        TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].outTimeStamp + ")\n");
+                        count++;
                         break;
                     }
                 }
