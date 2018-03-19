@@ -55,17 +55,19 @@ namespace stimatdichjo
 
         private void DFSButton(object sender, RoutedEventArgs e)
         {
-            ListMataKuliah LMataKuliah = new ListMataKuliah();
-            LMataKuliah.ReadFile(TextBox.Text);
 
             // clears the textbox
             TextboxnyaMathias.Text = String.Empty;
-            
-            /* Function for debugging
-            foreach (MataKuliah MK in LMataKuliah.ListMatKul)
+
+            ListMataKuliah LMataKuliah = new ListMataKuliah();
+            try
             {
-                TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
-            }*/
+                LMataKuliah.ReadFile(TextBox.Text);
+            }
+            catch
+            {
+                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan");
+            }
 
             //Call the DFS method
             LMataKuliah.topologicalSortDFS();
@@ -90,34 +92,43 @@ namespace stimatdichjo
                 }
             }
 
-            TampilGraf.Source = convert(LMataKuliah.DrawGraph());
+            TampilGraf.Source = convert(LMataKuliah.DrawGraph("DFS"));
         }
 
         private void BFSButton(object sender, RoutedEventArgs e)
         {
-            ListMataKuliah LMataKuliah = new ListMataKuliah();
-            LMataKuliah.ReadFile(TextBox.Text);
-
             // clears the textbox
             TextboxnyaMathias.Text = String.Empty;
 
-            /* Function for debugging
-            foreach (MataKuliah MK in LMataKuliah.ListMatKul)
+            ListMataKuliah LMataKuliah = new ListMataKuliah();
+            try
             {
-                TextboxnyaMathias.AppendText(MK.PrintMataKuliah());
-            }*/
-
-            //Call the BFS method
-            List<int> order = new List<int>();
-            order = LMataKuliah.topologicalSortBFS();
-            //search for each time stamp that hasn't printed
-            foreach (int i in order)
+                LMataKuliah.ReadFile(TextBox.Text);
+            } catch
             {
-                //print the elements
-                TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[i].NamaMataKuliah + '\n');
+                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan");
             }
 
-            TampilGraf.Source = convert(LMataKuliah.DrawGraph());
+            //Call the BFS method
+            List<List<int>> order = new List<List<int>>();
+            order = LMataKuliah.topologicalSortBFS();
+            //search for each time stamp that hasn't printed
+            for (int i = 0; i < order.Count; i++)
+            {
+                // print number of semester
+                TextboxnyaMathias.AppendText("Semester " + (i + 1) + ": ");
+                int count = 0;
+                foreach (int j in order[i])
+                {
+                    //print the elements
+                    if (count > 0) TextboxnyaMathias.AppendText(", ");
+                    TextboxnyaMathias.AppendText(LMataKuliah.ListMatKul[j].NamaMataKuliah);
+                    count++;
+                }
+                TextboxnyaMathias.AppendText("\n");
+            }
+
+            TampilGraf.Source = convert(LMataKuliah.DrawGraph("BFS"));
         }
 
         // Function to convert Bitmap into BitmapSource which will be used to embed graph image
@@ -152,42 +163,6 @@ namespace stimatdichjo
             NamaMataKuliah = _NamaMatKul;
             PreRequisite = _PreReq;
         }
-        // Print Nama Mata Kuliah and its Prerequisites
-        public string PrintMataKuliah()
-        {
-            string stringToReturn;
-            stringToReturn = "Nama Mata Kuliah : " + NamaMataKuliah + '\n';
-            stringToReturn += "Nomor ID : " + id + '\n';
-            //if no prerequisite
-            if (PreRequisite.Count == 0)
-            {
-                stringToReturn += "No PreRequisite !\n";
-            }
-            else
-            {
-                stringToReturn += "PreRequisite :";
-                foreach (string _MatKul in PreRequisite)
-                {
-                    stringToReturn += " " + _MatKul;
-                }
-                stringToReturn += '\n';
-            }
-            if (PostRequisite.Count == 0)
-            {
-                stringToReturn += "No PostRequisite !\n";
-            }
-            else
-            {
-                stringToReturn += "PostRequisite :";
-                foreach (string _MatKul in PostRequisite)
-                {
-                    stringToReturn += " " + _MatKul;
-                }
-                stringToReturn += '\n';
-            }
-            return stringToReturn;
-        }
-
     }
 
     class ListMataKuliah
@@ -200,43 +175,45 @@ namespace stimatdichjo
          * */
         public void ReadFile(string FileName)
         {
-            StreamReader file = new StreamReader(FileName);
-            string line;
-
-            while ((line = file.ReadLine()) != null)
+            if (FileName != null && FileName.Length != 0 && new FileInfo(FileName).Exists)
             {
-                //System.Console.WriteLine(line);
-                line = line.Substring(0, line.Length - 1);
-                string[] arrMatKul = line.Split(',');
-                for (int i = 0; i < arrMatKul.Length; i++)
+                StreamReader file = new StreamReader(FileName);
+                string line;
+
+                while ((line = file.ReadLine()) != null)
                 {
-                    arrMatKul[i] = arrMatKul[i].Replace(" ", string.Empty);
-                }
-                MataKuliah MK = new MataKuliah();
-                MK.NamaMataKuliah = arrMatKul[0];
-                if (arrMatKul.Length > 1)
-                {
-                    for (int i = 1; i < arrMatKul.Length; i++)
+                    //System.Console.WriteLine(line);
+                    line = line.Substring(0, line.Length - 1);
+                    string[] arrMatKul = line.Split(',');
+                    for (int i = 0; i < arrMatKul.Length; i++)
                     {
-                        MK.PreRequisite.Add(arrMatKul[i]);
+                        arrMatKul[i] = arrMatKul[i].Replace(" ", string.Empty);
                     }
+                    MataKuliah MK = new MataKuliah();
+                    MK.NamaMataKuliah = arrMatKul[0];
+                    if (arrMatKul.Length > 1)
+                    {
+                        for (int i = 1; i < arrMatKul.Length; i++)
+                        {
+                            MK.PreRequisite.Add(arrMatKul[i]);
+                        }
+                    }
+                    ListMatKul.Add(MK);
                 }
-                ListMatKul.Add(MK);
-            }
-            //Sort the ListMatKul by its NamaMataKuliah
-            ListMatKul = ListMatKul.OrderBy(o => o.PreRequisite.Count).ToList();
-            //Add their ID
-            AddID();
-            AddPostRequisite();
-            //Console.Write(ListMatKul[0].NamaMataKuliah);
-            for (int i = 0; i < ListMatKul.Count; i++)
-            {
-                ListMatKul[i].PrintMataKuliah();
-            }
-            file.Close();
+                //Sort the ListMatKul by its NamaMataKuliah
+                ListMatKul = ListMatKul.OrderBy(o => o.PreRequisite.Count).ToList();
+                //Add their ID
+                AddID();
+                AddPostRequisite();
+                file.Close();
 
-            // Suspend the screen.  
-            System.Console.ReadLine();
+                // Suspend the screen.  
+                System.Console.ReadLine();
+            } else
+            {
+                FileNotFoundException dichi = new FileNotFoundException();
+                throw dichi;
+            }
         }
         public void AddPostRequisite()
         {
@@ -274,18 +251,33 @@ namespace stimatdichjo
                 ListMatKul[i].id = i;
             }
         }
-        public Bitmap DrawGraph()
+        public Bitmap DrawGraph(string JenisButton)
         {
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            for (int i = 0; i < ListMatKul.Count; i++)
+            if(JenisButton == "DFS")
             {
-                for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
+                for (int i = 0; i < ListMatKul.Count; i++)
                 {
-                    graph.AddEdge(ListMatKul[i].PreRequisite[j], ListMatKul[i].NamaMataKuliah);
-                }
+                    for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
+                    {
+                        graph.AddEdge(ListMatKul[i].PreRequisite[j] + '\n' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].inTimeStamp + '/' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].outTimeStamp, ListMatKul[i].NamaMataKuliah + '\n' + ListMatKul[i].inTimeStamp + '/' + ListMatKul[i].outTimeStamp);
+                    }
 
+                }
             }
+            else
+            {
+                for (int i = 0; i < ListMatKul.Count; i++)
+                {
+                    for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
+                    {
+                        graph.AddEdge(ListMatKul[i].PreRequisite[j], ListMatKul[i].NamaMataKuliah);
+                    }
+
+                }
+            }
+            
 
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
@@ -341,42 +333,51 @@ namespace stimatdichjo
             }
         }
 
-        public List<int> topologicalSortBFS()
+        public List<List<int>> topologicalSortBFS()
         {
             // Lists degree of each nodes
             int[] derajat = new int[ListMatKul.Count];
-            for (int i = 0; i < ListMatKul.Count; i++)
+            for (int k = 0; k < ListMatKul.Count; k++)
             {
-                derajat[i] = ListMatKul[i].PreRequisite.Count;
+                derajat[k] = ListMatKul[k].PreRequisite.Count;
             }
 
             // Add nodes with zero degrees to the queue
             LinkedList<int> queue = new LinkedList<int>();
-            for (int i = 0; i < ListMatKul.Count; i++)
+            for (int k = 0; k < ListMatKul.Count; k++)
             {
-                if (derajat[i] == 0)
+                if (derajat[k] == 0)
                 {
-                    queue.AddLast(i);
+                    queue.AddLast(k);
                 }
             }
 
             // Add sorted nodes into the topOrder list
-            List<int> topOrder = new List<int>();
+            List<List<int>> topOrder = new List<List<int>>();
+            int i = 0;
             while (queue.Count > 0)
-            {   
+            {
+                List<int> temp = new List<int>();
                 // Remove the first element of the queue
-                int top = queue.First.Value;
-                queue.RemoveFirst();
-                topOrder.Add(top);
+                while (queue.Count > 0)
+                {
+                    int top = queue.First.Value;
+                    queue.RemoveFirst();
+                    temp.Add(top);
+                    
+                }
+                topOrder.Add(temp);
 
                 // Subtract degree of any other nodes that pointed by the removed node by 1
-                foreach (string simpul in ListMatKul[top].PostRequisite)
-                {
-                    if(--derajat[GetNumberInList(simpul)] == 0)
+                foreach (int top in topOrder[i])
+                    foreach (string simpul in ListMatKul[top].PostRequisite)
                     {
-                        queue.AddLast(GetNumberInList(simpul));
+                        if(--derajat[GetNumberInList(simpul)] == 0)
+                        {
+                            queue.AddLast(GetNumberInList(simpul));
+                        }
                     }
-                }
+                i++;
             }
 
             return topOrder;
