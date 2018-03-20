@@ -21,13 +21,13 @@
                 </LinearGradientBrush>
             </Rectangle.Fill>
         </Rectangle>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="32,30,0,0" FontFamily="FOT-RodinBokutoh Pro L" FontSize="36" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="57" Width="430" FontWeight="Thin" Foreground="#FF2B548F" Text="Graph-It!"/>
-        <Button x:Name="Impor_File_Button" Content="Pilih file..." HorizontalAlignment="Left" Margin="387,149,0,0" VerticalAlignment="Top" Width="75" FontFamily="Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="32,30,0,0" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro L" FontSize="36" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="57" Width="430" FontWeight="Thin" Foreground="#FF2B548F" Text="Graph-It!"/>
+        <Button x:Name="Impor_File_Button" Content="Pilih file..." HorizontalAlignment="Left" Margin="387,149,0,0" VerticalAlignment="Top" Width="75" FontFamily="pack://application:,,,/Font/#Neue Haas Grotesk Text Pro" Click="ImporFileButton" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
             <Button.Effect>
                 <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
             </Button.Effect>
         </Button>
-        <TextBox x:Name="TextBox" HorizontalAlignment="Left" Height="19" Margin="45,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="333" Grid.Column="2" FontFamily="Neue Haas Grotesk Text Pro Medium" Background="{x:Null}" Foreground="#FF2B548F">
+        <TextBox x:Name="TextBox" HorizontalAlignment="Left" Height="19" Margin="45,149,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="333" Grid.Column="2" FontFamily="pack://application:,,,/Font/#Neue Haas Grotesk Text Pro Medium" Background="{x:Null}" Foreground="#FF2B548F">
             <TextBox.Effect>
                 <DropShadowEffect BlurRadius="10" Direction="270" Opacity="0.25"/>
             </TextBox.Effect>
@@ -39,13 +39,13 @@
                 </LinearGradientBrush>
             </TextBox.BorderBrush>
         </TextBox>
-        <Button x:Name="DFS" Content="DFS" HorizontalAlignment="Left" Margin="267,209,0,0" VerticalAlignment="Top" Width="74" Click="DFSButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+        <Button x:Name="DFS" Content="DFS" HorizontalAlignment="Left" Margin="267,209,0,0" VerticalAlignment="Top" Width="74" Click="DFSButton" FontFamily="pack://application:,,,/Font/#Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
             <Button.Effect>
                 <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
             </Button.Effect>
         </Button>
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="45,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="FOT-RodinBokutoh Pro DB" FontSize="16" Foreground="#FF2B548F" Height="32" Width="307"><Run Text="Masukkan"/><Run Text=" nama"/><Run Text=" "/><Run Text="file di kotak bawah ini"/></TextBlock>
-        <TextBox x:Name="TextboxnyaMathias" HorizontalAlignment="Left" Height="317" Margin="87,233,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" FontFamily="FOT-RodinBokutoh Pro M" Grid.Column="2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{x:Null}" Foreground="#FF38548F" CaretBrush="#FF608AC7">
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="45,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro DB" FontSize="16" Foreground="#FF2B548F" Height="32" Width="307"><Run Text="Masukkan"/><Run Text=" nama"/><Run Text=" "/><Run Text="file di kotak bawah ini"/></TextBlock>
+        <TextBox x:Name="TextboxnyaMathias" HorizontalAlignment="Left" Height="317" Margin="87,233,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="334" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro M" Grid.Column="2" IsReadOnly="True" VerticalScrollBarVisibility="Auto" Background="{x:Null}" Foreground="#FF38548F" CaretBrush="#FF608AC7">
             <TextBox.BorderBrush>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FF608AC7" Offset="0.531"/>
@@ -61,14 +61,14 @@
                 <DropShadowEffect BlurRadius="10" Direction="270" Opacity="0.25"/>
             </Image.Effect>
         </Image>
-        <Button x:Name="BFS" Content="BFS" HorizontalAlignment="Left" Margin="347,209,0,0" VerticalAlignment="Top" Width="74" Click="BFSButton" FontFamily="Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
+        <Button x:Name="BFS" Content="BFS" HorizontalAlignment="Left" Margin="347,209,0,0" VerticalAlignment="Top" Width="74" Click="BFSButton" FontFamily="pack://application:,,,/Font/#Neue Haas Grotesk Text Pro" Grid.Column="2" Height="19" FontWeight="Medium" Background="#FF608AC7" BorderBrush="{x:Null}" Foreground="White">
             <Button.Effect>
                 <DropShadowEffect Direction="270" Opacity="0.2" BlurRadius="10"/>
             </Button.Effect>
         </Button>
-        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="87,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="FOT-RodinBokutoh Pro EB" Text="Output" Foreground="#FF2B548F" Height="24" Width="58"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="189,65,-72,0" FontFamily="FOT-RodinBokutoh Pro UB" FontSize="11" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="25" Width="430" FontWeight="Thin" Foreground="#FF2B548F" Text="Untuk perencanaan kuliah yang lebih baik"/>
-        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="38,309,-371,0" FontFamily="FOT-RodinBokutoh Pro UB" FontSize="48" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Height="215" Width="1351" FontWeight="Thin" Foreground="#0C2B548F" Text="Asumsi anda lulus setiap kuliah" Grid.ColumnSpan="2">
+        <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="87,211,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro EB" Text="Output" Foreground="#FF2B548F" Height="24" Width="58"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="189,65,-72,0" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro UB" FontSize="11" RenderTransformOrigin="0.5,0.5" Grid.Column="2" Height="25" Width="430" FontWeight="Thin" Foreground="#FF2B548F" Text="Untuk perencanaan kuliah yang lebih baik"/>
+        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="38,309,-371,0" FontFamily="pack://application:,,,/Font/#FOT-RodinBokutoh Pro UB" FontSize="48" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Height="215" Width="1351" FontWeight="Thin" Foreground="#0C2B548F" Text="Asumsi anda lulus setiap kuliah" Grid.ColumnSpan="2">
             <TextBlock.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

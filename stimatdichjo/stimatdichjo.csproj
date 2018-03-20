@@ -96,6 +96,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Font\FOT-RodinBokutoh Pro DB.otf" />
+    <Resource Include="Font\FOT-RodinBokutoh Pro EB.otf" />
+    <Resource Include="Font\FOT-RodinBokutoh Pro L.otf" />
+    <Resource Include="Font\FOT-RodinBokutoh Pro M.otf" />
+    <Resource Include="Font\FOT-RodinBokutoh Pro UB.otf" />
+    <Resource Include="Font\NHaasGroteskTXPro-55Rg.ttf" />
+    <Resource Include="Font\NHaasGroteskTXPro-65Md.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -105,5 +112,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

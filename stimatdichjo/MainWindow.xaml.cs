@@ -55,7 +55,6 @@ namespace stimatdichjo
 
         private void DFSButton(object sender, RoutedEventArgs e)
         {
-
             // clears the textbox
             TextboxnyaMathias.Text = String.Empty;
 
@@ -92,7 +91,12 @@ namespace stimatdichjo
                 }
             }
 
-            TampilGraf.Source = convert(LMataKuliah.DrawGraph("DFS"));
+            TampilGraf.Source = convert(LMataKuliah.DrawGraph());
+
+            // force garbage collection
+            LMataKuliah = null;
+            printed = null;
+            GC.Collect();
         }
 
         private void BFSButton(object sender, RoutedEventArgs e)
@@ -128,7 +132,12 @@ namespace stimatdichjo
                 TextboxnyaMathias.AppendText("\n");
             }
 
-            TampilGraf.Source = convert(LMataKuliah.DrawGraph("BFS"));
+            LMataKuliah.DrawGraph(order, TampilGraf);
+
+            // force garbage collection
+            LMataKuliah = null;
+            order = null;
+            GC.Collect();
         }
 
         // Function to convert Bitmap into BitmapSource which will be used to embed graph image
@@ -206,9 +215,6 @@ namespace stimatdichjo
                 AddID();
                 AddPostRequisite();
                 file.Close();
-
-                // Suspend the screen.  
-                System.Console.ReadLine();
             } else
             {
                 FileNotFoundException dichi = new FileNotFoundException();
@@ -217,8 +223,6 @@ namespace stimatdichjo
         }
         public void AddPostRequisite()
         {
-
-
             for (int i = 0; i < ListMatKul.Count; i++)
             {
                 //for each other matkul
@@ -251,34 +255,20 @@ namespace stimatdichjo
                 ListMatKul[i].id = i;
             }
         }
-        public Bitmap DrawGraph(string JenisButton)
+        public Bitmap DrawGraph()
         {
+            // For DFS graph drawing
             Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
             Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            if(JenisButton == "DFS")
+            for (int i = 0; i < ListMatKul.Count; i++)
             {
-                for (int i = 0; i < ListMatKul.Count; i++)
+                for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
                 {
-                    for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
-                    {
-                        graph.AddEdge(ListMatKul[i].PreRequisite[j] + '\n' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].inTimeStamp + '/' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].outTimeStamp, ListMatKul[i].NamaMataKuliah + '\n' + ListMatKul[i].inTimeStamp + '/' + ListMatKul[i].outTimeStamp);
-                    }
-
+                    graph.AddEdge(ListMatKul[i].PreRequisite[j] + '\n' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].inTimeStamp + '/' + ListMatKul[GetNumberInList(ListMatKul[i].PreRequisite[j])].outTimeStamp, ListMatKul[i].NamaMataKuliah + '\n' + ListMatKul[i].inTimeStamp + '/' + ListMatKul[i].outTimeStamp);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < ListMatKul.Count; i++)
-                {
-                    for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
-                    {
-                        graph.AddEdge(ListMatKul[i].PreRequisite[j], ListMatKul[i].NamaMataKuliah);
-                    }
 
-                }
             }
             
-
             Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
             renderer.CalculateLayout();
             int width = 1500;
@@ -287,6 +277,61 @@ namespace stimatdichjo
 
             return bitmap;
         }
+
+        public void DrawGraph(List<List<int>> order, System.Windows.Controls.Image Graph)
+        {
+            Microsoft.Msagl.Drawing.Graph graph = new Microsoft.Msagl.Drawing.Graph("graph");
+
+            for (int i = 0; i < ListMatKul.Count; i++)
+            {
+                for (int j = 0; j < ListMatKul[i].PreRequisite.Count; j++)
+                {
+                    graph.AddEdge(ListMatKul[i].PreRequisite[j], ListMatKul[i].NamaMataKuliah);
+                }
+            }
+
+            //Bitmap creation
+            Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+            renderer.CalculateLayout();
+            int width = 1500;
+            Bitmap bitmap = new Bitmap(width, (int)(graph.Height * (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            renderer.Render(bitmap);
+
+            //Convert and show the image
+            BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            Graph.Source = image;
+            bitmap.Dispose();
+
+            AnimateBFS(order, Graph, graph);
+        }
+
+        public async void AnimateBFS(List<List<int>> order, System.Windows.Controls.Image Graph, Microsoft.Msagl.Drawing.Graph graph)
+        {
+            // Animation handling
+            for (int i = 0; i < order.Count; i++)
+            {
+                // Delay for the animation
+                await Task.Delay(1000);
+                //Color node for each semester with green
+                foreach (int j in order[i])
+                {
+                    graph.FindNode(ListMatKul[j].NamaMataKuliah).Attr.FillColor = Microsoft.Msagl.Drawing.Color.PaleGreen;
+                }
+
+                //Bitmap creation
+                Microsoft.Msagl.GraphViewerGdi.GraphRenderer renderer = new Microsoft.Msagl.GraphViewerGdi.GraphRenderer(graph);
+                renderer.CalculateLayout();
+                int width = 1500;
+                Bitmap bitmap = new Bitmap(width, (int)(graph.Height * (width / graph.Width)), System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                renderer.Render(bitmap);
+
+                //Convert and show the image
+                BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                Graph.Source = image;
+                bitmap.Dispose();
+            }
+        }
+
         //Visit all of the list in the PreRequisites of a node that hasn't visited
         public void topologicalSortRecDFS(int node, bool[] visited)
         {
