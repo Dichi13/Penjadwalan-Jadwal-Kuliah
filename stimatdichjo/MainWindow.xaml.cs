@@ -1,23 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Forms;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Windows.Interop;
-using System.Collections;
 
 namespace stimatdichjo
 {
@@ -65,7 +56,7 @@ namespace stimatdichjo
             }
             catch
             {
-                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan");
+                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan atau tidak valid");
             }
 
             //Call the DFS method
@@ -110,7 +101,7 @@ namespace stimatdichjo
                 LMataKuliah.ReadFile(TextBox.Text);
             } catch
             {
-                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan");
+                TextboxnyaMathias.AppendText("Berkas tidak dapat ditemukan atau tidak valid");
             }
 
             //Call the BFS method
@@ -131,6 +122,8 @@ namespace stimatdichjo
                 }
                 TextboxnyaMathias.AppendText("\n");
             }
+
+            if (order.Count == 0) TextboxnyaMathias.AppendText("Graf bukan merupakan graf asiklik");
 
             LMataKuliah.DrawGraph(order, TampilGraf);
 
